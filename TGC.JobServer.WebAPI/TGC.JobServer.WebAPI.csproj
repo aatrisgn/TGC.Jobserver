@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>de86af71-2701-45df-9c00-1427aebed9aa</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json.dist" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json.dist" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.7.28" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TGC.JobServer.Abstractions\TGC.JobServer.Abstractions.csproj" />
+    <ProjectReference Include="..\TGC.JobServer.Infrastructure\TGC.JobServer.Infrastructure.csproj" />
+    <ProjectReference Include="..\TGC.JobServer.Jobs\TGC.JobServer.Jobs.csproj" />
+    <ProjectReference Include="..\TGC.JobServer.Models\TGC.JobServer.Models.csproj" />
+    <ProjectReference Include="..\TGC.JobServer.Services\TGC.JobServer.Services.csproj" />
+  </ItemGroup>
+
+</Project>

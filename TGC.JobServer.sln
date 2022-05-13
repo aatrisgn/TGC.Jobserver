@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TGC.JobServer.WebAPI", "TGC.JobServer.WebAPI\TGC.JobServer.WebAPI.csproj", "{9EF0A1D3-8BF4-4DE3-A0F3-5F3205B38699}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TGC.JobServer.Jobs", "TGC.JobServer.Jobs\TGC.JobServer.Jobs.csproj", "{822459BD-8AB4-48E2-A96A-ADB84898F700}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TGC.JobServer.Infrastructure", "TGC.JobServer.Infrastructure\TGC.JobServer.Infrastructure.csproj", "{1606AAB6-DCA4-4C3E-9B3D-322E5176FE1A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TGC.JobServer.Abstractions", "TGC.JobServer.Abstractions\TGC.JobServer.Abstractions.csproj", "{EF7735F5-957B-4539-BFA6-BB592908B3EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TGC.JobServer.Services", "TGC.JobServer.Services\TGC.JobServer.Services.csproj", "{70FACEB0-A948-40CE-9A23-5630DCED15D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TGC.JobServer.Models", "TGC.JobServer.Models\TGC.JobServer.Models.csproj", "{FDEE06E6-D498-4DEE-B2AB-F654ED65EBB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EF0A1D3-8BF4-4DE3-A0F3-5F3205B38699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF0A1D3-8BF4-4DE3-A0F3-5F3205B38699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF0A1D3-8BF4-4DE3-A0F3-5F3205B38699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF0A1D3-8BF4-4DE3-A0F3-5F3205B38699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{822459BD-8AB4-48E2-A96A-ADB84898F700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{822459BD-8AB4-48E2-A96A-ADB84898F700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{822459BD-8AB4-48E2-A96A-ADB84898F700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{822459BD-8AB4-48E2-A96A-ADB84898F700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1606AAB6-DCA4-4C3E-9B3D-322E5176FE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1606AAB6-DCA4-4C3E-9B3D-322E5176FE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1606AAB6-DCA4-4C3E-9B3D-322E5176FE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1606AAB6-DCA4-4C3E-9B3D-322E5176FE1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF7735F5-957B-4539-BFA6-BB592908B3EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF7735F5-957B-4539-BFA6-BB592908B3EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF7735F5-957B-4539-BFA6-BB592908B3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF7735F5-957B-4539-BFA6-BB592908B3EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70FACEB0-A948-40CE-9A23-5630DCED15D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70FACEB0-A948-40CE-9A23-5630DCED15D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70FACEB0-A948-40CE-9A23-5630DCED15D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70FACEB0-A948-40CE-9A23-5630DCED15D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDEE06E6-D498-4DEE-B2AB-F654ED65EBB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDEE06E6-D498-4DEE-B2AB-F654ED65EBB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDEE06E6-D498-4DEE-B2AB-F654ED65EBB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDEE06E6-D498-4DEE-B2AB-F654ED65EBB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA9013C5-7DC8-4C21-8BC1-5A3428111688}
+	EndGlobalSection
+EndGlobal
