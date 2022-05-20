@@ -24,6 +24,17 @@ namespace TGC.JobServer.WebAPI.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        // GET: api/<JobController>
+        [HttpGet("startup")]
+        public async Task<IActionResult> GetStartupJobs()
+        {
+            var startupJobIds = await Task.Factory.StartNew(() => {
+                return _jobService.GetStartupJobIds();
+            });
+
+            return Ok(startupJobIds);
+        }
+
         // GET api/<JobController>/5
         [HttpGet("{jobId}")]
         public async Task<IActionResult> Get(int jobId)

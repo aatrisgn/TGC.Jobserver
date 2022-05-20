@@ -3,8 +3,8 @@ using TGC.JobServer.Models.DTOs;
 
 namespace TGC.JobServer.Abstractions.Services;
 
-public interface IRecurringService
+public interface IExecutionService
 {
-    bool Accept(string recurringTypeName);
+    bool Accept(string executionTypeName);
     string Enqueue(JobRequest jobRequest, IInvokeableJob invokeableJob);
 }

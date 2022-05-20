@@ -4,11 +4,11 @@ using TGC.JobServer.Models.DTOs;
 
 namespace TGC.JobServer.Jobs.JobExecutionStrategies;
 
-public class RecurringExecutionService : IRecurringService
+public class RecurringExecutionService : IExecutionService
 {
-    public bool Accept(string recurringTypeName)
+    public bool Accept(string executionTypeName)
     {
-        return recurringTypeName.ToLower() == JobExecutionReferences.RECURRING.ToLower();
+        return executionTypeName.ToLower() == JobExecutionReferences.RECURRING.ToLower();
     }
 
     public string Enqueue(JobRequest jobRequest, IInvokeableJob invokeableJob)

@@ -3,6 +3,7 @@ using Hangfire.SqlServer;
 using Hangfire.Storage;
 using Serilog;
 using Serilog.Events;
+using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Infrastructure;
@@ -57,11 +58,13 @@ namespace TGC.JobServer.WebAPI
                             .CreateLogger();
 
             builder.Services.AddSingleton<Serilog.ILogger>(logger);
-            builder.Services.AddSingleton<IMonitoringApi, MonitoringApi>();
+            builder.Services.AddSingleton<ICustomMonitoringApi, MonitoringApi>();
 
             builder.Services.AddScoped<IJobService, JobService>();
             builder.Services.AddScoped<IJobTypeResolver, JobTypeResolver>();
-            builder.Services.AddScoped<IJobRecurringTypeResolver, JobRecurringTypeResolver>();
+            builder.Services.AddScoped<IJobExecutionTypeResolver, JobExecutionTypeResolver>();
+            builder.Services.AddTransient<IStandardHttpClient, StandardHttpClient>();
+            builder.Services.AddScoped<IJobInitializeService, JobInitializeService>();
 
             AddExecutionStrategies(builder.Services);
             AddJobTypes(builder.Services);
@@ -71,10 +74,10 @@ namespace TGC.JobServer.WebAPI
 
         public static void AddExecutionStrategies(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<IRecurringService, BatchExecutionService>();
-            serviceCollection.AddScoped<IRecurringService, DelayedExecutionService>();
-            serviceCollection.AddScoped<IRecurringService, FireAndForgetExecutionService>();
-            serviceCollection.AddScoped<IRecurringService, RecurringExecutionService>();
+            serviceCollection.AddScoped<IExecutionService, BatchExecutionService>();
+            serviceCollection.AddScoped<IExecutionService, DelayedExecutionService>();
+            serviceCollection.AddScoped<IExecutionService, FireAndForgetExecutionService>();
+            serviceCollection.AddScoped<IExecutionService, RecurringExecutionService>();
         }
 
         public static void AddJobTypes(IServiceCollection serviceCollection)

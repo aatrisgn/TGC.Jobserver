@@ -8,16 +8,16 @@ using TGC.JobServer.Models.DTOs;
 
 namespace TGC.JobServer.Jobs.JobExecutionStrategies;
 
-public class FireAndForgetExecutionService : IRecurringService
+public class FireAndForgetExecutionService : IExecutionService
 {
-    public bool Accept(string recurringTypeName)
+    public bool Accept(string executionTypeName)
     {
-        return recurringTypeName.ToLower() == JobExecutionReferences.FIRE_AND_FORGET.ToLower();
+        return executionTypeName.ToLower() == JobExecutionReferences.FIRE_AND_FORGET.ToLower();
     }
 
     public string Enqueue(JobRequest jobRequest, IInvokeableJob invokeableJob)
     {
-        var some = JsonSerializer.Deserialize<FireAndForgetDescriber>(jobRequest.JobExecutionTypeInformation);
+        var fireAndForgetDescriber = JsonSerializer.Deserialize<FireAndForgetDescriber>(jobRequest.JobExecutionTypeInformation);
         //TODO: Consider moving to base class
         var jobId = BackgroundJob.Enqueue(() => invokeableJob.Execute(new HangfireJobPayload(jobRequest)));
         return jobId;

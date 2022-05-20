@@ -1,10 +1,9 @@
 ﻿using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Models;
-using TGC.JobServer.Models.DTOs;
 
 namespace TGC.JobServer.Jobs;
 
-public class IsAliveJob : IInvokeableJob, IInitializeOnStartup
+public class IsAliveJob : IInvokeableJob
 {
     public bool Accept(string jobReference)
     {
@@ -14,10 +13,5 @@ public class IsAliveJob : IInvokeableJob, IInitializeOnStartup
     public void Execute(HangfireJobPayload jobRequest)
     {
         throw new NotImplementedException();
-    }
-
-    public void InitializeOnStartup()
-    {
-        
     }
 }

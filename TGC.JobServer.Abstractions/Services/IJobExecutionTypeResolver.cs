@@ -2,7 +2,7 @@
 using TGC.JobServer.Models.DTOs;
 
 namespace TGC.JobServer.Abstractions.Services;
-public interface IJobRecurringTypeResolver
+public interface IJobExecutionTypeResolver
 {
-    IRecurringService Resolve(JobRequest jobRequest);
+    IExecutionService Resolve(JobRequest jobRequest);
 }

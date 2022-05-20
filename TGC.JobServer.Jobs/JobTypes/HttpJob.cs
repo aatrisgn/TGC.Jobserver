@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Jobs.JobTypes.Containers;
 using TGC.JobServer.Models;
@@ -9,10 +10,12 @@ namespace TGC.JobServer.Jobs.JobTypes;
 public class HttpJob : IInvokeableJob
 {
     private readonly ILogger<HttpJob> _logger;
+    private readonly IStandardHttpClient _standardHttpClient;
 
-    public HttpJob(ILogger<HttpJob> logger)
+    public HttpJob(ILogger<HttpJob> logger, IStandardHttpClient standardHttpClient)
     {
         _logger = logger;
+        _standardHttpClient = standardHttpClient;
     }
 
     public bool Accept(string jobReference)
@@ -26,7 +29,7 @@ public class HttpJob : IInvokeableJob
         {
             var httpDescriber = JsonSerializer.Deserialize<HttpJobDescriber>(hangfireJobPayload.JobTypeInformation);
 
-            using (var httpClient = new HttpClient())
+            using (var httpClient = _standardHttpClient.CreateClient())
             {
                 _logger.LogInformation($"REQUEST - {httpDescriber.HttpMethod}: {httpDescriber.Url}");
 

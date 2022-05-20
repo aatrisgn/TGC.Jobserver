@@ -1,6 +1,6 @@
-﻿using Hangfire.Storage;
-using Hangfire.Storage.Monitoring;
+﻿using Hangfire.Storage.Monitoring;
 using System.Collections.ObjectModel;
+using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Models.DTOs;
@@ -10,15 +10,15 @@ public class JobService : IJobService
 {
     private IEnumerable<IInvokeableJob> _invokeableJobs;
     private IJobTypeResolver _jobTypeResolver;
-    private IJobRecurringTypeResolver _jobRecurringTypeResolver;
-    private IMonitoringApi _monitoringApi;
+    private IJobExecutionTypeResolver _jobExecutionTypeResolver;
+    private ICustomMonitoringApi _customMonitoringApi;
 
-    public JobService(IEnumerable<IInvokeableJob> invokeableJobs, IJobTypeResolver jobTypeResolver, IJobRecurringTypeResolver jobRecurringTypeResolver, IMonitoringApi monitoringApi)
+    public JobService(IEnumerable<IInvokeableJob> invokeableJobs, IJobTypeResolver jobTypeResolver, IJobExecutionTypeResolver jobExecutionTypeResolver, ICustomMonitoringApi customMonitoringApi)
     {
         _invokeableJobs = invokeableJobs;
         _jobTypeResolver = jobTypeResolver;
-        _jobRecurringTypeResolver = jobRecurringTypeResolver;
-        _monitoringApi = monitoringApi;
+        _jobExecutionTypeResolver = jobExecutionTypeResolver;
+        _customMonitoringApi = customMonitoringApi;
     }
 
     private ICollection<IInvokeableJob> GetJobsToInvoke(string jobReference)
@@ -28,7 +28,7 @@ public class JobService : IJobService
 
     public JobDetailsDto GetJobStatusById(int jobId)
     {
-        return _monitoringApi.JobDetails(jobId.ToString());
+        return _customMonitoringApi.JobDetails(jobId.ToString());
     }
 
     public ICollection<string> HandleJobs(IEnumerable<JobRequest> jobRequests)
@@ -47,10 +47,15 @@ public class JobService : IJobService
     public string HandleJob(JobRequest jobRequest)
     {
         var resolvedJobType = _jobTypeResolver.Resolve(jobRequest);
-        var resolvedRecurringType = _jobRecurringTypeResolver.Resolve(jobRequest);
+        var resolvedExecutionType = _jobExecutionTypeResolver.Resolve(jobRequest);
 
-        var jobId = resolvedRecurringType.Enqueue(jobRequest, resolvedJobType);
+        var jobId = resolvedExecutionType.Enqueue(jobRequest, resolvedJobType);
 
         return jobId;
+    }
+
+    public IEnumerable<string> GetStartupJobIds()
+    {
+        return _customMonitoringApi.GetJobsInitializedOnStartup();
     }
 }

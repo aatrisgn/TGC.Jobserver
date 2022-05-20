@@ -1,11 +1,26 @@
 ﻿using Hangfire;
-using Hangfire.Storage;
 using Hangfire.Storage.Monitoring;
+using TGC.JobServer.Abstractions.Infrastructure;
 
 namespace TGC.JobServer.Infrastructure
 {
-    public class MonitoringApi : IMonitoringApi
+    public class MonitoringApi : ICustomMonitoringApi
     {
+        private List<string> startupJobIds;
+        private object listlock = new object();
+
+        public MonitoringApi()
+        {
+            startupJobIds = new List<string>();
+        }
+        public void AddJobIdInitializedOnStartup(string jobId)
+        {
+            lock (listlock)
+            {
+                startupJobIds.Add(jobId);
+            }
+        }
+
         public JobList<DeletedJobDto> DeletedJobs(int from, int count)
         {
             return JobStorage.Current.GetMonitoringApi().DeletedJobs(from, count);
@@ -49,6 +64,11 @@ namespace TGC.JobServer.Infrastructure
         public JobList<FetchedJobDto> FetchedJobs(string queue, int from, int perPage)
         {
             return JobStorage.Current.GetMonitoringApi().FetchedJobs(queue, from, perPage);
+        }
+
+        public IEnumerable<string> GetJobsInitializedOnStartup()
+        {
+            return startupJobIds;
         }
 
         public StatisticsDto GetStatistics()
