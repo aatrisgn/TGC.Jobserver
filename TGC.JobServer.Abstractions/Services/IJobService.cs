@@ -9,4 +9,5 @@ public interface IJobService
     string HandleJob(JobRequest jobRequests);
     JobDetailsDto GetJobStatusById(int jobId);
     IEnumerable<string> GetStartupJobIds();
+    bool DeleteJob(string jobId); 
 }

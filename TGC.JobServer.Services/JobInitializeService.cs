@@ -8,11 +8,13 @@ public class JobInitializeService : IJobInitializeService
 {
     private readonly IJobService _jobService;
     private readonly ICustomMonitoringApi _customMonitoringApi;
+    private readonly IJsonSerializer _jsonSerializer;
 
-    public JobInitializeService(IJobService jobService, ICustomMonitoringApi customMonitoringApi)
+    public JobInitializeService(IJobService jobService, ICustomMonitoringApi customMonitoringApi, IJsonSerializer jsonSerializer)
     {
         _jobService = jobService;
         _customMonitoringApi = customMonitoringApi;
+        _jsonSerializer = jsonSerializer;
     }
 
     public async Task InitialzeJobsOnStartup()
@@ -20,7 +22,7 @@ public class JobInitializeService : IJobInitializeService
         var startupJobsConfigurationFilePath = "JobInitializer.json";
         var startUpJobsJson = await File.ReadAllTextAsync(startupJobsConfigurationFilePath);
 
-        var startupJobs = JsonSerializer.Deserialize<List<JobRequest>>(startUpJobsJson);
+        var startupJobs = _jsonSerializer.Deserialize<List<JobRequest>>(startUpJobsJson);
 
         var jobIds = _jobService.HandleJobs(startupJobs);
 

@@ -11,11 +11,13 @@ public class HttpJob : IInvokeableJob
 {
     private readonly ILogger<HttpJob> _logger;
     private readonly IStandardHttpClient _standardHttpClient;
+    private readonly IJsonSerializer _jsonSerializer;
 
-    public HttpJob(ILogger<HttpJob> logger, IStandardHttpClient standardHttpClient)
+    public HttpJob(ILogger<HttpJob> logger, IStandardHttpClient standardHttpClient, IJsonSerializer jsonSerializer)
     {
         _logger = logger;
         _standardHttpClient = standardHttpClient;
+        _jsonSerializer = jsonSerializer;
     }
 
     public bool Accept(string jobReference)
@@ -27,7 +29,7 @@ public class HttpJob : IInvokeableJob
     {
         try
         {
-            var httpDescriber = JsonSerializer.Deserialize<HttpJobDescriber>(hangfireJobPayload.JobTypeInformation);
+            var httpDescriber = _jsonSerializer.Deserialize<HttpJobDescriber>(hangfireJobPayload.JobTypeInformation);
 
             using (var httpClient = _standardHttpClient.CreateClient())
             {

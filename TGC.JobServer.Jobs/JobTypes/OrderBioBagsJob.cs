@@ -11,11 +11,13 @@ public class OrderBioBagsJob : IInvokeableJob
 {
     private readonly ILogger<OrderBioBagsJob> _logger;
     private readonly IStandardHttpClient _standardHttpClient;
+    private readonly IJsonSerializer _jsonSerializer;
 
-    public OrderBioBagsJob(ILogger<OrderBioBagsJob> logger, IStandardHttpClient standardHttpClient)
+    public OrderBioBagsJob(ILogger<OrderBioBagsJob> logger, IStandardHttpClient standardHttpClient, IJsonSerializer jsonSerializer)
     {
         _logger = logger;
         _standardHttpClient = standardHttpClient;
+        _jsonSerializer = jsonSerializer;
     }
 
     public bool Accept(string jobReference)
@@ -25,7 +27,7 @@ public class OrderBioBagsJob : IInvokeableJob
 
     public void Execute(HangfireJobPayload hangfireJobPayload)
     {
-        var orderBioBagsDescriber = JsonSerializer.Deserialize<OrderBioBagsDescriber>(hangfireJobPayload.JobTypeInformation);
+        var orderBioBagsDescriber = _jsonSerializer.Deserialize<OrderBioBagsDescriber>(hangfireJobPayload.JobTypeInformation);
 
         var formContent = new FormUrlEncodedContent(new[]
             {
@@ -39,8 +41,7 @@ public class OrderBioBagsJob : IInvokeableJob
 
         using(var httpClient = _standardHttpClient.CreateClient())
         {
-            var myHttpClient = new HttpClient();
-            var response = myHttpClient.PostAsync("https://nemaffaldsservice.kk.dk/BestilBioPoser/CreateRequest", formContent).Result;
+            var response = httpClient.PostAsync("https://nemaffaldsservice.kk.dk/BestilBioPoser/CreateRequest", formContent).Result;
 
             var responseContent = response.Content.ReadAsStringAsync().Result;
 

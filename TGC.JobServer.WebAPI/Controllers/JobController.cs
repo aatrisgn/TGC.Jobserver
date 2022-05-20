@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Models.DTOs;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TGC.JobServer.WebAPI.Controllers
 {
@@ -18,13 +15,6 @@ namespace TGC.JobServer.WebAPI.Controllers
         }
 
         // GET: api/<JobController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/<JobController>
         [HttpGet("startup")]
         public async Task<IActionResult> GetStartupJobs()
         {
@@ -32,7 +22,7 @@ namespace TGC.JobServer.WebAPI.Controllers
                 return _jobService.GetStartupJobIds();
             });
 
-            return Ok(startupJobIds);
+            return Ok(new JobResponse(startupJobIds));
         }
 
         // GET api/<JobController>/5
@@ -78,21 +68,20 @@ namespace TGC.JobServer.WebAPI.Controllers
                 return _jobService.HandleJobs(jobRequests);
             });
 
-            return Ok(jobIds);
-        }
-
-        // PUT api/<JobController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-            throw new NotImplementedException();
+            return Ok(new JobResponse(jobIds));
         }
 
         // DELETE api/<JobController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(string id)
         {
-            throw new NotImplementedException();
+            var succesfulDeletion = _jobService.DeleteJob(id);
+            if (succesfulDeletion)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }

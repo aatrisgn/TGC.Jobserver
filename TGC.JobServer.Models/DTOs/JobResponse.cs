@@ -2,9 +2,10 @@
 {
     public class JobResponse
     {
-        public JobResponse(Job job)
+        public IEnumerable<string> JobIds;
+        public JobResponse(IEnumerable<string> jobids)
         {
-
+            JobIds = jobids;
         }
     }
 }

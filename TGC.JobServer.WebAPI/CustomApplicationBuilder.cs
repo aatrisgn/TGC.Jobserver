@@ -65,6 +65,7 @@ namespace TGC.JobServer.WebAPI
             builder.Services.AddScoped<IJobExecutionTypeResolver, JobExecutionTypeResolver>();
             builder.Services.AddTransient<IStandardHttpClient, StandardHttpClient>();
             builder.Services.AddScoped<IJobInitializeService, JobInitializeService>();
+            builder.Services.AddScoped<IJsonSerializer, AbstractedJsonSerializer>();
 
             AddExecutionStrategies(builder.Services);
             AddJobTypes(builder.Services);

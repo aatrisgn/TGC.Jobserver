@@ -1,4 +1,5 @@
-﻿using Hangfire.Storage.Monitoring;
+﻿using Hangfire;
+using Hangfire.Storage.Monitoring;
 using System.Collections.ObjectModel;
 using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
@@ -57,5 +58,10 @@ public class JobService : IJobService
     public IEnumerable<string> GetStartupJobIds()
     {
         return _customMonitoringApi.GetJobsInitializedOnStartup();
+    }
+
+    public bool DeleteJob(string jobId)
+    {
+        return BackgroundJob.Delete(jobId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using TGC.JobServer.Abstractions.Jobs;
-using TGC.JobServer.Abstractions.Services;
+﻿using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Models.DTOs;
 
 namespace TGC.JobServer.Infrastructure;
