@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Text.Json;
 using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
+using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Jobs.JobTypes.Containers;
 using TGC.JobServer.Models;
 
@@ -12,12 +12,14 @@ public class HttpJob : IInvokeableJob
     private readonly ILogger<HttpJob> _logger;
     private readonly IStandardHttpClient _standardHttpClient;
     private readonly IJsonSerializer _jsonSerializer;
+    private readonly IJobCallbackService _callbackService;
 
-    public HttpJob(ILogger<HttpJob> logger, IStandardHttpClient standardHttpClient, IJsonSerializer jsonSerializer)
+    public HttpJob(ILogger<HttpJob> logger, IStandardHttpClient standardHttpClient, IJsonSerializer jsonSerializer, IJobCallbackService callbackService)
     {
         _logger = logger;
         _standardHttpClient = standardHttpClient;
         _jsonSerializer = jsonSerializer;
+        _callbackService = callbackService;
     }
 
     public bool Accept(string jobReference)
@@ -29,17 +31,23 @@ public class HttpJob : IInvokeableJob
     {
         try
         {
+            HttpResponseMessage httpResponseMessage;
             var httpDescriber = _jsonSerializer.Deserialize<HttpJobDescriber>(hangfireJobPayload.JobTypeInformation);
 
             using (var httpClient = _standardHttpClient.CreateClient())
             {
                 _logger.LogInformation($"REQUEST - {httpDescriber.HttpMethod}: {httpDescriber.Url}");
 
-                var response = ExecuteHttpRequest(httpClient, httpDescriber);
+                httpResponseMessage = ExecuteHttpRequest(httpClient, httpDescriber);
 
-                var responseBody = response.Content.ReadAsStringAsync().Result;
+                var responseBody = httpResponseMessage.Content.ReadAsStringAsync().Result;
 
-                _logger.LogInformation($"RESPONSE - {httpDescriber.HttpMethod}:{httpDescriber.Url} ({response.StatusCode}) - {responseBody}");
+                _logger.LogInformation($"RESPONSE - {httpDescriber.HttpMethod}:{httpDescriber.Url} ({httpResponseMessage.StatusCode}) - {responseBody}");
+            }
+
+            if(hangfireJobPayload.JobCallback != null)
+            {
+                _callbackService.SendPostRequestToCallbackUrl(hangfireJobPayload.JobCallback.Url, httpResponseMessage.StatusCode.ToString());
             }
         }
         catch (Exception ex)

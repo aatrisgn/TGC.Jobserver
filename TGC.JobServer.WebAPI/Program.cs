@@ -30,7 +30,7 @@ app.MapControllers();
 using(var initializeScope = app.Services.CreateScope())
 {
     var jobInitializeService = initializeScope.ServiceProvider.GetService<IJobInitializeService>();
-    jobInitializeService.InitialzeJobsOnStartup().Wait();
+    //jobInitializeService.InitialzeJobsOnStartup().Wait();
 }
 
 app.Run();

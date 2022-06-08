@@ -29,6 +29,9 @@ At the moment, you will manually have to query the API for status of a job or lo
 ## Custom job-queue/handling
 At the moment, the solution is dependendent on Hangfire. This works fine for non-commercial personal projects, but if you would take part of this solution to an actual production environment, I am not sure, whether the license is valid (Not a legal kind of guy). Therefore, I would like to make the engine replaceable in the future. Currently, I have no idea how.
 
+## Expand on heartbeat
+Currently, you can query the default .Net heartbeat at /health and a custom at api/heartbeat. This should be combined into a single controller with the relevant information.
+
 # Known Issues
 ## Async jobs
 At the moment, you are not able to define jobs which has a async execution method signature. Well, it is possible, but the error handling of the Hangfire exection does not detect it as being failed. It only works for synchronous methods.

@@ -1,8 +1,5 @@
 ﻿using Hangfire;
 using Hangfire.SqlServer;
-using Hangfire.Storage;
-using Serilog;
-using Serilog.Events;
 using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Abstractions.Services;
@@ -47,17 +44,6 @@ namespace TGC.JobServer.WebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var logger = new LoggerConfiguration()
-            #if DEBUG
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
-            #else
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Informatin)
-            #endif
-                .Enrich.FromLogContext()
-                            .WriteTo.Console()
-                            .CreateLogger();
-
-            builder.Services.AddSingleton<Serilog.ILogger>(logger);
             builder.Services.AddSingleton<ICustomMonitoringApi, MonitoringApi>();
 
             builder.Services.AddScoped<IJobService, JobService>();
@@ -66,6 +52,7 @@ namespace TGC.JobServer.WebAPI
             builder.Services.AddTransient<IStandardHttpClient, StandardHttpClient>();
             builder.Services.AddScoped<IJobInitializeService, JobInitializeService>();
             builder.Services.AddScoped<IJsonSerializer, AbstractedJsonSerializer>();
+            builder.Services.AddScoped<IJobCallbackService, JobCallbackService>();
 
             AddExecutionStrategies(builder.Services);
             AddJobTypes(builder.Services);

@@ -4,10 +4,13 @@
     "JobExecutionTypeReference": "TGC:Jobserver:ExecutionType:FIRE_AND_FORGET:1.0.0",
     "JobTypeInformation": {
       "HttpMethod": "GET",
-      "Url": ""
+      "Url": "http://localhost:5008/weatherforecast"
     },
     "JobExecutionTypeInformation": {
 
+    },
+    "JobCallback": {
+      "Url": "http://localhost:5008/PostTest"
     }
   },
   {
@@ -15,11 +18,14 @@
     "JobExecutionTypeReference": "TGC:Jobserver:ExecutionType:FIRE_AND_FORGET:1.0.0",
     "JobTypeInformation": {
       "HttpMethod": "GET",
-      "Url": "",
+      "Url": "http://localhost:5008/weatherforecast",
       "RequestPayload": ""
     },
     "JobExecutionTypeInformation": {
 
+    },
+    "JobCallback": {
+      "Url": "http://localhost:5008/PostTest"
     }
   },
   {
@@ -34,6 +40,9 @@
     },
     "JobExecutionTypeInformation": {
 
+    },
+    "JobCallback": {
+      "Url": "http://localhost:5008/PostTest"
     }
   }
 ]

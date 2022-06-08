@@ -2,86 +2,85 @@
 using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Models.DTOs;
 
-namespace TGC.JobServer.WebAPI.Controllers
+namespace TGC.JobServer.WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class JobController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class JobController : ControllerBase
+    private readonly IJobService _jobService;
+    public JobController(IJobService jobService)
     {
-        private readonly IJobService _jobService;
-        public JobController(IJobService jobService)
+        _jobService = jobService;
+    }
+
+    // GET: api/<JobController>
+    [HttpGet("startup")]
+    public async Task<IActionResult> GetStartupJobs()
+    {
+        var startupJobIds = await Task.Factory.StartNew(() => {
+            return _jobService.GetStartupJobIds();
+        });
+
+        return Ok(new JobResponse(startupJobIds));
+    }
+
+    // GET api/<JobController>/5
+    [HttpGet("{jobId}")]
+    public async Task<IActionResult> Get(int jobId)
+    {
+        var jobStatusDto = await Task.Factory.StartNew(() => {
+            return _jobService.GetJobStatusById(jobId);
+        });
+
+        var jobInformationResponse = new JobInformationResponse(jobStatusDto, jobId);
+
+        return Ok(jobInformationResponse);
+    }
+
+    [HttpGet("history/{jobId}")]
+    public async Task<IActionResult> GetHistory(int jobId)
+    {
+        var jobStatusDto = await Task.Factory.StartNew(() => {
+            return _jobService.GetJobStatusById(jobId);
+        });
+
+        var jobHistoryResponse = new JobHistoryResponse(jobStatusDto, jobId);
+
+        return Ok(jobHistoryResponse);
+    }
+
+    // POST api/<JobController>
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] List<JobRequest> jobRequests)
+    {
+        if(jobRequests == null)
         {
-            _jobService = jobService;
+            return BadRequest();
         }
 
-        // GET: api/<JobController>
-        [HttpGet("startup")]
-        public async Task<IActionResult> GetStartupJobs()
+        if(jobRequests.Count > 10)
         {
-            var startupJobIds = await Task.Factory.StartNew(() => {
-                return _jobService.GetStartupJobIds();
-            });
-
-            return Ok(new JobResponse(startupJobIds));
+            return BadRequest("You are not allowed to create more than 10 jobs at a time");
         }
 
-        // GET api/<JobController>/5
-        [HttpGet("{jobId}")]
-        public async Task<IActionResult> Get(int jobId)
+        var jobIds = await Task.Factory.StartNew(() => {
+            return _jobService.HandleJobs(jobRequests);
+        });
+
+        return Ok(new JobResponse(jobIds));
+    }
+
+    // DELETE api/<JobController>/5
+    [HttpDelete("{id}")]
+    public IActionResult Delete(string id)
+    {
+        var succesfulDeletion = _jobService.DeleteJob(id);
+        if (succesfulDeletion)
         {
-            var jobStatusDto = await Task.Factory.StartNew(() => {
-                return _jobService.GetJobStatusById(jobId);
-            });
-
-            var jobInformationResponse = new JobInformationResponse(jobStatusDto, jobId);
-
-            return Ok(jobInformationResponse);
+            return Ok();
         }
 
-        [HttpGet("history/{jobId}")]
-        public async Task<IActionResult> GetHistory(int jobId)
-        {
-            var jobStatusDto = await Task.Factory.StartNew(() => {
-                return _jobService.GetJobStatusById(jobId);
-            });
-
-            var jobHistoryResponse = new JobHistoryResponse(jobStatusDto, jobId);
-
-            return Ok(jobHistoryResponse);
-        }
-
-        // POST api/<JobController>
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] List<JobRequest> jobRequests)
-        {
-            if(jobRequests == null)
-            {
-                return BadRequest();
-            }
-
-            if(jobRequests.Count > 10)
-            {
-                return BadRequest("You are not allowed to create more than 10 jobs at a time");
-            }
-
-            var jobIds = await Task.Factory.StartNew(() => {
-                return _jobService.HandleJobs(jobRequests);
-            });
-
-            return Ok(new JobResponse(jobIds));
-        }
-
-        // DELETE api/<JobController>/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            var succesfulDeletion = _jobService.DeleteJob(id);
-            if (succesfulDeletion)
-            {
-                return Ok();
-            }
-
-            return NotFound();
-        }
+        return NotFound();
     }
 }

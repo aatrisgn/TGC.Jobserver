@@ -8,6 +8,7 @@ public class HangfireJobPayload
     public HangfireJobPayload(JobRequest jobRequest)
     {
         this.JobTypeInformation = JsonSerializer.Serialize(jobRequest.JobTypeInformation);
+        this.JobCallback = jobRequest.JobCallback;
     }
 
     public HangfireJobPayload()
@@ -16,4 +17,5 @@ public class HangfireJobPayload
     }
 
     public string JobTypeInformation { set; get; }
+    public JobCallback JobCallback { set; get; }
 }
