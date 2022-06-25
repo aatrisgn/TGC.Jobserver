@@ -11,9 +11,11 @@ namespace TGC.JobServer.Jobs.JobExecutionStrategies;
 public class DelayedExecutionService : IExecutionService
 {
     private readonly IJsonSerializer _jsonSerializer;
-    public DelayedExecutionService(IJsonSerializer jsonSerializer)
+    private readonly IJobEngine _jobEngine;
+    public DelayedExecutionService(IJsonSerializer jsonSerializer, IJobEngine jobEngine)
     {
         _jsonSerializer = jsonSerializer;
+        _jobEngine = jobEngine;
     }
 
     public bool Accept(string executionTypeName)
@@ -27,7 +29,7 @@ public class DelayedExecutionService : IExecutionService
         //TODO: Consider creating an abstraction for initializng a HanfireJobPayload, since we are currently dependent on an implementation inside HangfireJobPayload, which can cause inconsistency.
 
         //null being parsed as parameter since PerformContext is automatically set by Hangfire
-        var jobId = BackgroundJob.Schedule(
+        var jobId = _jobEngine.Delayed(
             () => invokeableJob.Execute(new HangfireJobPayload(jobRequest), null),
             DetermineDelay(delayedExecutionDescriber));
 

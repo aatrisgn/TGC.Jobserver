@@ -12,11 +12,13 @@ public class RecurringExecutionService : IExecutionService
 {
     private readonly IJsonSerializer _jsonSerializer;
     private readonly ICustomMonitoringApi _customMonitoringApi;
+    private readonly IJobEngine _jobEngine;
 
-    public RecurringExecutionService(IJsonSerializer jsonSerializer, ICustomMonitoringApi customMonitoringApi)
+    public RecurringExecutionService(IJsonSerializer jsonSerializer, ICustomMonitoringApi customMonitoringApi, IJobEngine jobEngine)
     {
         _jsonSerializer = jsonSerializer;
         _customMonitoringApi = customMonitoringApi;
+        _jobEngine = jobEngine;
     }
 
     public bool Accept(string executionTypeName)
@@ -54,7 +56,7 @@ public class RecurringExecutionService : IExecutionService
 
     public string AddOrUpdateJob(RecurringExecutionDescriber describer, IInvokeableJob job, JobRequest  jobRequest)
     {
-        RecurringJob.AddOrUpdate(
+        _jobEngine.Recurring(
                 describer.RecurringJobName,
                 () => job.Execute(new HangfireJobPayload(jobRequest), null),
                 Cron.Daily //TODO: Get Cron from request

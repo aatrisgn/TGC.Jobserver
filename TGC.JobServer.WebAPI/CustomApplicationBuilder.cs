@@ -53,6 +53,7 @@ namespace TGC.JobServer.WebAPI
             builder.Services.AddScoped<IJobInitializeService, JobInitializeService>();
             builder.Services.AddScoped<IJsonSerializer, AbstractedJsonSerializer>();
             builder.Services.AddScoped<IJobCallbackService, JobCallbackService>();
+            builder.Services.AddSingleton<IJobEngine, HangfireJobEngine>();
 
             AddExecutionStrategies(builder.Services);
             AddJobTypes(builder.Services);
