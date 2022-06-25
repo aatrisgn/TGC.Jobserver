@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Hangfire.Server;
+using Microsoft.Extensions.Logging;
 using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Abstractions.Services;
@@ -27,7 +28,7 @@ public class HttpJob : IInvokeableJob
         return jobReference.ToLower() == JobTypeReferences.HTTP_JOB.ToLower();
     }
 
-    public void Execute(HangfireJobPayload hangfireJobPayload)
+    public void Execute(HangfireJobPayload hangfireJobPayload, PerformContext context)
     {
         try
         {
@@ -47,7 +48,12 @@ public class HttpJob : IInvokeableJob
 
             if(hangfireJobPayload.JobCallback != null)
             {
-                _callbackService.SendPostRequestToCallbackUrl(hangfireJobPayload.JobCallback.Url, httpResponseMessage.StatusCode.ToString());
+                var callbackResponse = new JobCallbackResponse
+                {
+                    JobId = context.BackgroundJob.Id,
+                    HttpResponseCode = httpResponseMessage.StatusCode
+                };
+                _callbackService.SendPostRequestToCallbackUrl(hangfireJobPayload.JobCallback.Url, callbackResponse);
             }
         }
         catch (Exception ex)

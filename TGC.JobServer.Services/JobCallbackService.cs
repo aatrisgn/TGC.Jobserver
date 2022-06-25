@@ -1,5 +1,6 @@
 ﻿using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Services;
+using TGC.JobServer.Models;
 
 namespace TGC.JobServer.Services;
 
@@ -13,7 +14,7 @@ public class JobCallbackService : IJobCallbackService
         _jsonSerializer = jsonSerializer;
     }
 
-    public void SendPostRequestToCallbackUrl(string url, object requestBody)
+    public void SendPostRequestToCallbackUrl(string url, ICallbackResponse requestBody)
     {
         using(var httpClient = _standardHttpClient.CreateClient())
         {

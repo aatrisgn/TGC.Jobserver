@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Text.Json;
+﻿using Hangfire.Server;
+using Microsoft.Extensions.Logging;
 using TGC.JobServer.Abstractions.Infrastructure;
 using TGC.JobServer.Abstractions.Jobs;
 using TGC.JobServer.Jobs.JobTypes.Containers;
@@ -25,7 +25,7 @@ public class OrderBioBagsJob : IInvokeableJob
         return jobReference == JobTypeReferences.ORDER_BIO_BAGS;
     }
 
-    public void Execute(HangfireJobPayload hangfireJobPayload)
+    public void Execute(HangfireJobPayload hangfireJobPayload, PerformContext context)
     {
         var orderBioBagsDescriber = _jsonSerializer.Deserialize<OrderBioBagsDescriber>(hangfireJobPayload.JobTypeInformation);
 

@@ -17,10 +17,10 @@ app.MapGet("/weatherforecast", () =>
     return "TestGet";
 });
 
-app.MapPost("/PostTest", ([FromBody] HttpResponseMessage todo) =>
+app.MapPost("/PostTest", ([FromBody] JsonDocument todo) =>
 {
     logger.LogInformation("/PostTest");
-    logger.LogInformation(todo.ToString());
+    var some = JsonSerializer.Deserialize<object>(todo);
 });
 
 app.Run();
