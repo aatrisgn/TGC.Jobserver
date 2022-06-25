@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+      run: dotnet restore TGC.JobServer
+    - name: Build TGC.JobServer
+      run: dotnet build TGC.JobServer --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
