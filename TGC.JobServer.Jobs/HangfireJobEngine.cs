@@ -32,4 +32,10 @@ public class HangfireJobEngine : IJobEngine
 
         return recurringName;
     }
+
+    public void Delete(string jobId)
+    {
+        BackgroundJob.Delete(jobId);
+    }
+
 }

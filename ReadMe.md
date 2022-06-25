@@ -4,7 +4,6 @@ This application is a personal project for creating a job/task server applicatio
 # Introduction
 This application seeks to support queuing and asynchronously processing for different types of applications via HTTP. The fundamental idea is to have C#-classes specified with specific behaviour for execution, which is 
 
-
 ## Purpose
 The purpose of this application is to try and create a asynchronously server application which is able to recieve and execute jobs via HTTP-request.
 
@@ -15,6 +14,15 @@ Generic HTTP-jobs can be defined in json and posted as request. Hangfire will th
 
 ## Callback
 It is possible to define a callback URL which the application will make a POST-request to, at the end of the job. The request contains JobId and Http response status from defined request in job.
+
+## Recurring, delayed and fire-and-forget
+It is currently possible to execute three types of job exectuion:
+- Fire-and-forget: Job queued and executed as soon as possible
+- Delayed: Job is queued and executed at a later point in time
+- Recurring: A recurring task is defined and a new job will be created and executed recurringly based on defined recurring interval.
+
+## Preconfigured jobs
+It is possible to define pre-configured jobs via a json file. This file is being read on start up. The JSON should be the same format as requests.
 
 # Roadmap
 This section describes what I would like to introduce, but have yet to have the time for. The sections are not prioritized, but will be updated once implemented.
@@ -29,7 +37,7 @@ At the moment, each jobtype is manually injected into the IoC. This works, but i
 At the moment, you are only able to create a single job and await of its defined exection. In the future, I would like to implement functionality for a process of jobs to be executed after each other.
 
 ## Custom job-queue/handling
-At the moment, the solution is dependendent on Hangfire. This works fine for non-commercial personal projects, but if you would take part of this solution to an actual production environment, I am not sure, whether the license is valid (Not a legal kind of guy). Therefore, I would like to make the engine replaceable in the future. Currently, I have no idea how.
+At the moment, the solution is dependendent on Hangfire. This works fine for non-commercial personal projects, but if you would take part of this solution to an actual production environment, I am not sure, whether the license is valid (Not a legal kind of guy). Therefore, I would like to make the engine replaceable in the future. Currently, the Hangfire functionality is partly abstracted away, but still dependent.
 
 ## Authorization in HTTP-jobs
 At the moment, you are not able to make authorized calls. It is planned to allow for bearer-tokens and define headers.

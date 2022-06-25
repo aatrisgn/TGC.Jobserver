@@ -13,13 +13,15 @@ public class JobService : IJobService
     private IJobTypeResolver _jobTypeResolver;
     private IJobExecutionTypeResolver _jobExecutionTypeResolver;
     private ICustomMonitoringApi _customMonitoringApi;
+    private IJobEngine _jobEngine;
 
-    public JobService(IEnumerable<IInvokeableJob> invokeableJobs, IJobTypeResolver jobTypeResolver, IJobExecutionTypeResolver jobExecutionTypeResolver, ICustomMonitoringApi customMonitoringApi)
+    public JobService(IEnumerable<IInvokeableJob> invokeableJobs, IJobTypeResolver jobTypeResolver, IJobExecutionTypeResolver jobExecutionTypeResolver, ICustomMonitoringApi customMonitoringApi, IJobEngine jobEngine)
     {
         _invokeableJobs = invokeableJobs;
         _jobTypeResolver = jobTypeResolver;
         _jobExecutionTypeResolver = jobExecutionTypeResolver;
         _customMonitoringApi = customMonitoringApi;
+        _jobEngine = jobEngine;
     }
 
     private ICollection<IInvokeableJob> GetJobsToInvoke(string jobReference)
@@ -67,6 +69,6 @@ public class JobService : IJobService
 
     public bool DeleteJob(string jobId)
     {
-        return BackgroundJob.Delete(jobId);
+        return _jobEngine.Delete(jobId);
     }
 }
