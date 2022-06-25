@@ -25,6 +25,11 @@ public class OrderBioBagsJob : IInvokeableJob
         return jobReference == JobTypeReferences.ORDER_BIO_BAGS;
     }
 
+    public void Callback(string url, ICallbackResponse jobCallbackResponse)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Execute(HangfireJobPayload hangfireJobPayload, PerformContext context)
     {
         var orderBioBagsDescriber = _jsonSerializer.Deserialize<OrderBioBagsDescriber>(hangfireJobPayload.JobTypeInformation);

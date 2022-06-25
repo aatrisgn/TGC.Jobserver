@@ -53,7 +53,7 @@ public class HttpJob : IInvokeableJob
                     JobId = context.BackgroundJob.Id,
                     HttpResponseCode = httpResponseMessage.StatusCode
                 };
-                _callbackService.SendPostRequestToCallbackUrl(hangfireJobPayload.JobCallback.Url, callbackResponse);
+                Callback(hangfireJobPayload.JobCallback.Url, callbackResponse);
             }
         }
         catch (Exception ex)
@@ -61,6 +61,11 @@ public class HttpJob : IInvokeableJob
             _logger.LogError(ex.ToString());
             throw;
         }
+    }
+
+    public void Callback(string url, ICallbackResponse jobCallbackResponse)
+    {
+        _callbackService.SendPostRequestToCallbackUrl(url, jobCallbackResponse);
     }
 
     private HttpResponseMessage ExecuteHttpRequest(HttpClient httpClient, HttpJobDescriber httpJobDescriber)

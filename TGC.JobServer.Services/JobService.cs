@@ -27,9 +27,14 @@ public class JobService : IJobService
         return _invokeableJobs.Where(i => i.Accept(jobReference) == true).ToList();
     }
 
-    public JobDetailsDto GetJobStatusById(int jobId)
+    public JobDetailsDto GetJobStatusById(string jobId)
     {
-        return _customMonitoringApi.JobDetails(jobId.ToString());
+        return _customMonitoringApi.JobDetails(jobId);
+    }
+
+    public bool JobExists(string jobId)
+    {
+        return _customMonitoringApi.JobDetails(jobId) == null;
     }
 
     public ICollection<string> HandleJobs(IEnumerable<JobRequest> jobRequests)

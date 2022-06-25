@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.Storage.Monitoring;
+using Hangfire.Storage;
 using TGC.JobServer.Abstractions.Infrastructure;
 
 namespace TGC.JobServer.Infrastructure
@@ -24,6 +25,13 @@ namespace TGC.JobServer.Infrastructure
         public JobList<DeletedJobDto> DeletedJobs(int from, int count)
         {
             return JobStorage.Current.GetMonitoringApi().DeletedJobs(from, count);
+        }
+
+        public bool RecurringJobExists(string jobId)
+        {
+            var recurringJobs = JobStorage.Current.GetConnection().GetRecurringJobs();
+
+            return recurringJobs.Any(job => job.Id == jobId);
         }
 
         public long DeletedListCount()

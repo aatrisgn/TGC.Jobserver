@@ -62,7 +62,6 @@ namespace TGC.JobServer.WebAPI
 
         public static void AddExecutionStrategies(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddScoped<IExecutionService, BatchExecutionService>();
             serviceCollection.AddScoped<IExecutionService, DelayedExecutionService>();
             serviceCollection.AddScoped<IExecutionService, FireAndForgetExecutionService>();
             serviceCollection.AddScoped<IExecutionService, RecurringExecutionService>();

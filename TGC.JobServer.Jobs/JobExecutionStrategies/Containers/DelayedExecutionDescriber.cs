@@ -1,4 +1,6 @@
 ﻿namespace TGC.JobServer.Jobs.JobExecutionStrategies.Containers;
-internal class DelayedExecutionDescriber
+public class DelayedExecutionDescriber
 {
+    public int DelayedAmount { get; set; }
+    public int DelayedType { get; set; }
 }

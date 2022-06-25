@@ -5,4 +5,5 @@ public interface ICustomMonitoringApi : IMonitoringApi
 {
     IEnumerable<string> GetJobsInitializedOnStartup();
     void AddJobIdInitializedOnStartup(string jobId);
+    public bool RecurringJobExists(string jobId);
 }

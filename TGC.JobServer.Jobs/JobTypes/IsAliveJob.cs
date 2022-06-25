@@ -11,6 +11,11 @@ public class IsAliveJob : IInvokeableJob
         return jobReference == JobTypeReferences.IS_ALIVE_JOB;
     }
 
+    public void Callback(string url, ICallbackResponse jobCallbackResponse)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Execute(HangfireJobPayload jobRequest, PerformContext context)
     {
         throw new NotImplementedException();

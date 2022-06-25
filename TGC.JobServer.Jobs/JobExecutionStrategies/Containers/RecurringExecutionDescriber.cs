@@ -1,4 +1,7 @@
 ﻿namespace TGC.JobServer.Jobs.JobExecutionStrategies.Containers;
-internal class RecurringExecutionDescriber
+public class RecurringExecutionDescriber
 {
+    public string RecurringJobName { get; set; }
+    public bool ShouldUpdate { get; set; }
+
 }

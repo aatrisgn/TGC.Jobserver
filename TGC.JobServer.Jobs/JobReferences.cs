@@ -17,5 +17,5 @@ public class JobExecutionReferences
     public static string FIRE_AND_FORGET = "TGC:Jobserver:ExecutionType:FIRE_AND_FORGET:1.0.0";
     public static string BATCH = "TGC:Jobserver:ExecutionType:BATCH:1.0.0";
     public static string RECURRING = "TGC:Jobserver:ExecutionType:RECURRING:1.0.0";
-    public static string DELAYED = "TGC:Jobserver:ExecutionType:Delayed:1.0.0";
+    public static string DELAYED = "TGC:Jobserver:ExecutionType:DELAYED:1.0.0";
 }

@@ -7,4 +7,5 @@ public interface IInvokeableJob
 {
     bool Accept(string jobReference);
     void Execute(HangfireJobPayload jobRequest, PerformContext context);
+    void Callback(string url, ICallbackResponse jobCallbackResponse);
 }

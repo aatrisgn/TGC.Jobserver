@@ -30,7 +30,7 @@ public class JobController : ControllerBase
     public async Task<IActionResult> Get(int jobId)
     {
         var jobStatusDto = await Task.Factory.StartNew(() => {
-            return _jobService.GetJobStatusById(jobId);
+            return _jobService.GetJobStatusById(jobId.ToString());
         });
 
         var jobInformationResponse = new JobInformationResponse(jobStatusDto, jobId);
@@ -42,7 +42,7 @@ public class JobController : ControllerBase
     public async Task<IActionResult> GetHistory(int jobId)
     {
         var jobStatusDto = await Task.Factory.StartNew(() => {
-            return _jobService.GetJobStatusById(jobId);
+            return _jobService.GetJobStatusById(jobId.ToString());
         });
 
         var jobHistoryResponse = new JobHistoryResponse(jobStatusDto, jobId);
@@ -69,6 +69,23 @@ public class JobController : ControllerBase
         });
 
         return Ok(new JobResponse(jobIds));
+    }
+
+    // POST api/<JobController>
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody]JobRequest jobRequest)
+    {
+        if (jobRequest == null)
+        {
+            return BadRequest();
+        }
+
+
+        var jobIds = await Task.Factory.StartNew(() => {
+            return _jobService.HandleJob(jobRequest);
+        });
+          
+        return Ok(jobIds);
     }
 
     // DELETE api/<JobController>/5

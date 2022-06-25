@@ -7,7 +7,9 @@ public interface IJobService
 {
     ICollection<string> HandleJobs(IEnumerable<JobRequest> jobRequests);
     string HandleJob(JobRequest jobRequests);
-    JobDetailsDto GetJobStatusById(int jobId);
+    JobDetailsDto GetJobStatusById(string jobId);
+
+    bool JobExists(string jobId);
     IEnumerable<string> GetStartupJobIds();
     bool DeleteJob(string jobId); 
 }
