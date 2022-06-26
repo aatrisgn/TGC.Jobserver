@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.Models.DTOs;
+using TGC.WebAPI.RateLimiting;
 
 namespace TGC.JobServer.WebAPI.Controllers;
 
@@ -25,7 +26,6 @@ public class JobController : ControllerBase
         return Ok(new JobResponse(startupJobIds));
     }
 
-    // GET api/<JobController>/5
     [HttpGet("{jobId}")]
     public async Task<IActionResult> Get(int jobId)
     {
@@ -50,7 +50,7 @@ public class JobController : ControllerBase
         return Ok(jobHistoryResponse);
     }
 
-    // POST api/<JobController>
+    [LimitRequests(MaxRequests = 5, TimeWindow = 1)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<JobRequest> jobRequests)
     {
@@ -71,7 +71,7 @@ public class JobController : ControllerBase
         return Ok(new JobResponse(jobIds));
     }
 
-    // POST api/<JobController>
+    [LimitRequests(MaxRequests = 5, TimeWindow = 1)]
     [HttpPut]
     public async Task<IActionResult> Put([FromBody]JobRequest jobRequest)
     {
@@ -88,7 +88,7 @@ public class JobController : ControllerBase
         return Ok(jobIds);
     }
 
-    // DELETE api/<JobController>/5
+    [LimitRequests(MaxRequests = 5, TimeWindow = 1)]
     [HttpDelete("{id}")]
     public IActionResult Delete(string id)
     {

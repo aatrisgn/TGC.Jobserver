@@ -33,6 +33,7 @@
     <ProjectReference Include="..\TGC.JobServer.Jobs\TGC.JobServer.Jobs.csproj" />
     <ProjectReference Include="..\TGC.JobServer.Models\TGC.JobServer.Models.csproj" />
     <ProjectReference Include="..\TGC.JobServer.Services\TGC.JobServer.Services.csproj" />
+    <ProjectReference Include="..\TGC.WebAPI.RateLimiting\TGC.WebAPI.RateLimiting.csproj" />
   </ItemGroup>
 
 </Project>

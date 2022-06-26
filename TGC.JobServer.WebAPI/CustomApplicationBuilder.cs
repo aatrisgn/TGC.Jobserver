@@ -40,6 +40,8 @@ namespace TGC.JobServer.WebAPI
 
             builder.Services.AddHangfireServer();
 
+            builder.Services.AddDistributedMemoryCache();
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

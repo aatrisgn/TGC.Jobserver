@@ -59,7 +59,7 @@ public class RecurringExecutionService : IExecutionService
         _jobEngine.Recurring(
                 describer.RecurringJobName,
                 () => job.Execute(new HangfireJobPayload(jobRequest), null),
-                Cron.Daily //TODO: Get Cron from request
+                describer.CronExpression
             );
 
         return describer.RecurringJobName;

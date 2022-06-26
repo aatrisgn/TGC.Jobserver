@@ -22,7 +22,7 @@ public class HangfireJobEngine : IJobEngine
         return jobId;
     }
 
-    public string Recurring(string recurringName, Expression<Action> method, Func<string> cronString)
+    public string Recurring(string recurringName, Expression<Action> method, string cronString)
     {
         RecurringJob.AddOrUpdate(
                 recurringName,
@@ -33,9 +33,9 @@ public class HangfireJobEngine : IJobEngine
         return recurringName;
     }
 
-    public void Delete(string jobId)
+    public bool Delete(string jobId)
     {
-        BackgroundJob.Delete(jobId);
+        return BackgroundJob.Delete(jobId);
     }
 
 }

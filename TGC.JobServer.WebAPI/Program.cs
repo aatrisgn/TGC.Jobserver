@@ -1,6 +1,7 @@
 using Hangfire;
 using TGC.JobServer.Abstractions.Services;
 using TGC.JobServer.WebAPI;
+using TGC.WebAPI.RateLimiting;
 
 var builder = CustomApplicationBuilder.Build(args);
 
@@ -26,8 +27,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseRequestThrottling();
 
-using(var initializeScope = app.Services.CreateScope())
+
+using (var initializeScope = app.Services.CreateScope())
 {
     var jobInitializeService = initializeScope.ServiceProvider.GetService<IJobInitializeService>();
     //jobInitializeService.InitialzeJobsOnStartup().Wait();
